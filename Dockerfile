@@ -10,7 +10,7 @@ RUN apt-get update && apt-get install -y \
     git \
     curl \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install pdo_mysql gd
+    && docker-php-ext-install pdo_mysql pdo_pgsql gd
 
 # Instalar NodeJS y NPM para compilar Bootstrap/Vite de forma correcta
 RUN curl -sL https://deb.nodesource.com/setup_18.x | bash - \
