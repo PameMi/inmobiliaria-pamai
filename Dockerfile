@@ -38,5 +38,10 @@ RUN npm run build
 # Dar permisos correctos a las carpetas de almacenamiento de Laravel
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
+# Comandos de optimización para producción (Evitan bloqueos de configuración)
+RUN php artisan config:cache \
+    && php artisan route:cache \
+    && php artisan view:cache
+
 # Exponer el puerto por defecto de Apache
 EXPOSE 80
