@@ -12,9 +12,9 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install pdo_mysql gd
 
-# Instalar NodeJS y NPM para poder compilar Bootstrap/Vite en el servidor
+# Instalar NodeJS y NPM para compilar Bootstrap/Vite de forma correcta
 RUN curl -sL https://deb.nodesource.com/setup_18.x | bash - \
-    && apt-get install -y Birds nodejs
+    && apt-get install -y build-essential nodejs
 
 # Habilitar el módulo de reescritura de Apache
 RUN a2enmod rewrite
