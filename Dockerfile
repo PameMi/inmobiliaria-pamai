@@ -35,13 +35,14 @@ RUN composer install --no-interaction --optimize-autoloader --no-dev
 RUN npm install
 RUN npm run build
 
-# Dar permisos correctos a las carpetas de almacenamiento de Laravel
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
-
-# Comandos de optimización para producción (Evitan bloqueos de configuración)
-RUN php artisan config:cache \
-    && php artisan route:cache \
-    && php artisan view:cache
+# Crear directorios internos de Laravel por si faltaron en la subida y dar permisos totales
+RUN mkdir -p /var/www/html/storage/framework/cache/data \
+    && mkdir -p /var/www/html/storage/framework/sessions \
+    && mkdir -p /var/www/html/storage/framework/views \
+    && mkdir -p /var/www/html/storage/logs \
+    && mkdir -p /var/www/html/bootstrap/cache \
+    && chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache \
+    && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
 # Exponer el puerto por defecto de Apache
 EXPOSE 80
