@@ -50,6 +50,10 @@ RUN echo '<Directory /var/www/html/public>\n\
     RewriteCond %{HTTP:X-Forwarded-Proto} !https\n\
     RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]\n\
 </Directory>' >> /etc/apache2/sites-available/000-default.conf
-
+# Comandos de optimización automáticos para la cuenta gratuita de Render
+RUN php artisan config:cache \
+    && php artisan route:cache \
+    && php artisan view:cache \
+    && php artisan migrate --force
 # Exponer el puerto por defecto de Apache
 EXPOSE 80
