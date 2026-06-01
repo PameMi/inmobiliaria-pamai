@@ -35,7 +35,7 @@ RUN composer install --no-interaction --optimize-autoloader --no-dev
 RUN npm install
 RUN npm run build
 
-# Crear directorios internos de Laravel por si faltaron en la subida y dar permisos totales
+# Crear directorios internos de Laravel y dar permisos totales
 RUN mkdir -p /var/www/html/storage/framework/cache/data \
     && mkdir -p /var/www/html/storage/framework/sessions \
     && mkdir -p /var/www/html/storage/framework/views \
@@ -43,6 +43,13 @@ RUN mkdir -p /var/www/html/storage/framework/cache/data \
     && mkdir -p /var/www/html/bootstrap/cache \
     && chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache \
     && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
+
+# Forzar a Apache a usar HTTPS para evitar contenido mixto y advertencias
+RUN echo '<Directory /var/www/html/public>\n\
+    RewriteEngine On\n\
+    RewriteCond %{HTTP:X-Forwarded-Proto} !https\n\
+    RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]\n\
+</Directory>' >> /etc/apache2/sites-available/0000-default.conf
 
 # Exponer el puerto por defecto de Apache
 EXPOSE 80
