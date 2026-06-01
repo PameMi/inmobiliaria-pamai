@@ -1,43 +1,85 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="bg-pamai text-white p-3 rounded text-center mb-4 position-relative">
-        <a href="{{ route('inventory') }}" class="btn btn-outline-light btn-sm position-absolute start-0 top-50 translate-middle-y ms-3">←</a>
-        <h4 class="m-0 text-uppercase tracking-wider fw-bold">Detalles de la Vivienda</h4>
+<div class="container my-4">
+    <!-- Navbar superior de detalles -->
+    <div class="d-flex justify-content-between align-items-center text-white py-3 px-3 mb-4" style="background-color: #1a446c; border-radius: 4px;">
+        <div class="d-flex align-items-center gap-2">
+            <a href="javascript:history.back()" class="btn btn-outline-light btn-sm">←</a>
+            <span class="fw-bold ms-2">Inmobiliaria PAMAI</span>
+        </div>
+        <h4 class="mb-0 fw-bold text-uppercase" style="letter-spacing: 1px;">Detalles de la Vivienda</h4>
+        <button class="btn btn-link text-white p-0"><i class="fas fa-cart-plus fs-4"></i>🛒+</button>
     </div>
 
-    <h3 class="text-pamai text-center fw-bold mb-4 text-uppercase">{{ $property->title }}</h3>
+    <!-- Título de la propiedad -->
+    <h3 class="text-center fw-bold my-4" style="color: #1a446c; letter-spacing: 1px;">{{ $property->title }}</h3>
+    <div class="mx-auto mb-4" style="width: 80px; height: 3px; background-color: #1a446c;"></div>
 
-    <!-- Muestra las imágenes repetidas idéntico a tu mockup -->
-    <div class="row justify-content-center mb-4">
-        @for($i = 0; $i < 3; $i++)
-            <div class="col-md-4 mb-3">
-                <div class="rounded-4 overflow-hidden shadow-sm">
-                    <img src="{{ asset('storage/' . $property->image) }}" class="img-fluid" style="height: 200px; width: 100%; object-fit: cover;">
-                </div>
+    <!-- Galería de 3 Imágenes -->
+    <div class="row g-3 mb-5">
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm overflow-hidden" style="border-radius: 12px;">
+                <img src="{{ $property->image_fachada }}" class="w-100" style="height: 220px; object-fit: cover;">
+                <div class="text-center text-white py-2 fw-bold small text-uppercase" style="background-color: #2b567d;">Fachada</div>
             </div>
-        @endfor
+        </div>
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm overflow-hidden" style="border-radius: 12px;">
+                <img src="{{ $property->image_comedor }}" class="w-100" style="height: 220px; object-fit: cover;">
+                <div class="text-center text-white py-2 fw-bold small text-uppercase" style="background-color: #2b567d;">Comedor</div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm overflow-hidden" style="border-radius: 12px;">
+                <img src="{{ $property->image_recamara }}" class="w-100" style="height: 220px; object-fit: cover;">
+                <div class="text-center text-white py-2 fw-bold small text-uppercase" style="background-color: #2b567d;">Recámara</div>
+            </div>
+        </div>
     </div>
 
-    <!-- Tabla de características técnicas -->
-    <div class="card border-0 shadow-sm rounded-4 p-4 max-width-800 mx-auto">
-        <table class="table table-striped m-0 align-middle">
-            <tbody>
-                <tr><td class="fw-bold text-secondary text-uppercase py-3">Tipo</td><td>{{ $property->type }}</td></tr>
-                <tr><td class="fw-bold text-secondary text-uppercase py-3">Precio (MXN)</td><td class="fw-bold text-pamai">${{ number_format($property->price, 2) }} MXN</td></tr>
-                <tr><td class="fw-bold text-secondary text-uppercase py-3">Estado</td><td><span class="badge bg-success p-2">{{ $property->status }}</span></td></tr>
-                <tr><td class="fw-bold text-secondary text-uppercase py-3">Ubicación</td><td>{{ $property->location }}</td></tr>
-                <tr><td class="fw-bold text-secondary text-uppercase py-3">Dimensiones</td><td>{{ $property->size }} m²</td></tr>
-                <tr><td class="fw-bold text-secondary text-uppercase py-3">Habitaciones</td><td>{{ $property->description }}</td></tr>
-            </tbody>
-        </table>
+    <!-- Tabla Detallada Estilo Mockup -->
+    <div class="row justify-content-center">
+        <div class="col-md-9">
+            <div class="table-responsive shadow-sm" style="border-radius: 12px; overflow: hidden;">
+                <table class="table table-bordered mb-0 align-middle text-center" style="border-color: #e9ecef;">
+                    <tbody>
+                        <tr>
+                            <td class="fw-bold text-muted bg-light text-uppercase small py-3" style="width: 30%;">Tipo</td>
+                            <td class="text-start ps-4 fw-bold text-dark">{{ $property->type }}</td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold text-muted bg-light text-uppercase small py-3">Precio (MXN)</td>
+                            <td class="text-start ps-4 fw-bold fs-5 text-primary">${{ number_format($property->price, 2) }} MXN</td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold text-muted bg-light text-uppercase small py-3">Estado</td>
+                            <td class="text-start ps-4">
+                                <span class="badge bg-success px-3 py-2 text-uppercase" style="border-radius: 20px;">{{ $property->status }}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold text-muted bg-light text-uppercase small py-3">Ubicación</td>
+                            <td class="text-start ps-4 text-secondary">{{ $property->location }}</td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold text-muted bg-light text-uppercase small py-3">Dimensiones</td>
+                            <td class="text-start ps-4 text-secondary">{{ $property->dimensions }}</td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold text-muted bg-light text-uppercase small py-3">Habitaciones</td>
+                            <td class="text-start ps-4 text-secondary small">{{ $property->rooms_detail }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
 
-        <div class="text-center mt-4">
-            <form action="{{ route('cart.add', $property->id) }}" method="POST">
-                @csrf
-                <button type="submit" class="btn btn-pamai btn-lg px-5 rounded-pill fw-bold shadow-sm">AGREGAR AL CARRITO</button>
-            </form>
+            <!-- Botón Agregar al Carrito idéntico a image_0c12e2.png -->
+            <div class="text-center mt-4">
+                <button class="btn btn-light shadow-sm text-uppercase fw-bold px-5 py-2" style="border-radius: 20px; border: 1px solid #e9ecef; color: #1a446c; font-size: 0.95rem; letter-spacing: 0.5px;">
+                    Agregar al Carrito
+                </button>
+            </div>
         </div>
     </div>
 </div>
