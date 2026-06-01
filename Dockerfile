@@ -1,10 +1,11 @@
 FROM php:8.2-apache
 
-# Instalar extensiones necesarias para Laravel y dependencias del sistema
+# Instalar extensiones necesarias para Laravel y dependencias de Linux (incluyendo Postgres)
 RUN apt-get update && apt-get install -y \
     libpng-dev \
     libjpeg-dev \
     libfreetype6-dev \
+    libpq-dev \
     zip \
     unzip \
     git \
@@ -34,6 +35,7 @@ RUN composer install --no-interaction --optimize-autoloader --no-dev
 # Instalar dependencias de NPM y compilar los archivos CSS/JS con Vite
 RUN npm install
 RUN npm run build
+
 # Crear directorios internos de Laravel y dar permisos totales
 RUN mkdir -p /var/www/html/storage/framework/cache/data \
     && mkdir -p /var/www/html/storage/framework/sessions \
