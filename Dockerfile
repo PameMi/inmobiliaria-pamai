@@ -34,7 +34,6 @@ RUN composer install --no-interaction --optimize-autoloader --no-dev
 # Instalar dependencias de NPM y compilar los archivos CSS/JS con Vite
 RUN npm install
 RUN npm run build
-
 # Crear directorios internos de Laravel y dar permisos totales
 RUN mkdir -p /var/www/html/storage/framework/cache/data \
     && mkdir -p /var/www/html/storage/framework/sessions \
@@ -50,11 +49,6 @@ RUN echo '<Directory /var/www/html/public>\n\
     RewriteCond %{HTTP:X-Forwarded-Proto} !https\n\
     RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]\n\
 </Directory>' >> /etc/apache2/sites-available/000-default.conf
-# Comandos de optimización automáticos para la cuenta gratuita de Render
-# Comandos de optimización automáticos para la cuenta gratuita de Render
-RUN php artisan config:cache \
-    && php artisan route:cache \
-    && php artisan view:cache
 
 # Exponer el puerto por defecto de Apache
 EXPOSE 80
